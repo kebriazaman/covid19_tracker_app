@@ -1,4 +1,5 @@
 import 'package:covid19_tracker/services/states_services.dart';
+import 'package:covid19_tracker/views/country_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -89,14 +90,34 @@ class _CountriesListScreenState extends State<CountriesListScreen> {
                           if (searchController.text.isEmpty) {
                             return Column(
                               children: [
-                                ListTile(
-                                  leading: Image(
-                                    width: 50,
-                                    height: 50,
-                                    image: NetworkImage(snapshot.data![index]['countryInfo']['flag']),
+                                InkWell(
+                                  child: ListTile(
+                                    leading: Image(
+                                      width: 50,
+                                      height: 50,
+                                      image: NetworkImage(snapshot.data![index]['countryInfo']['flag']),
+                                    ),
+                                    title: Text(snapshot.data![index]['country']),
+                                    subtitle: Text(snapshot.data![index]['cases'].toString()),
                                   ),
-                                  title: Text(snapshot.data![index]['country']),
-                                  subtitle: Text(snapshot.data![index]['cases'].toString()),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CountryDetailsScreen(
+                                          name: snapshot.data![index]['country'],
+                                          image: snapshot.data![index]['countryInfo']['flag'],
+                                          totalCases: snapshot.data![index]['cases'],
+                                          totalDeaths: snapshot.data![index]['deaths'],
+                                          todayRecovered: snapshot.data![index]['todayRecovered'],
+                                          active: snapshot.data![index]['active'],
+                                          critical: snapshot.data![index]['critical'],
+                                          totalRecovored: snapshot.data![index]['recovered'],
+                                          test: snapshot.data![index]['tests'],
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ],
                             );
